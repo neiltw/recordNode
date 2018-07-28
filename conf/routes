@@ -1,0 +1,47 @@
+
+# Routes
+# This file defines all application routes (Higher priority routes first)
+# ~~~~
+
+# An example controller showing a sample home page
+GET         /                    controllers.LoginController.index
+
+#Proudct
+GET         /Category            controllers.CategoryController.CategoryIndex
+POST        /addCategory         controllers.CategoryController.createProduct
+POST        /editCategoryDone    controllers.CategoryController.editProduct
+POST        /editCategory        controllers.CategoryController.searchProduct
+GET         /editCategory        controllers.CategoryController.CategoryIndex
+POST        /delCategory         controllers.CategoryController.delProduct
+
+
+
+GET         /Spend               controllers.LiftRecordController.LiftRecordIndex
+POST        /addSpend            controllers.LiftRecordController.addSpendProduct
+POST        /addBuget            controllers.LiftRecordController.addMonthBudget
+#GET         /AddPayLift          controllers.LiftRecordController.LiftRecordIndex
+
+#POST        /editRecordDone      controllers.LiftRecordController.editProduct
+#POST        /editRecord          controllers.LiftRecordController.searchProduct
+#GET         /editRecord          controllers.LiftRecordController.LiftRecordIndex
+#POST        /record              controllers.LiftRecordController.createProduct
+#GET         /record              controllers.LiftRecordController.LiftRecordIndex
+
+
+#Ledger
+GET         /Ledger              controllers.LedgerController.ledgerIndex
+GET         /api/GetledgerChart  controllers.LedgerController.ledgerChart
+POST        /api/changeMonth     controllers.LedgerController.changeMonth
+
+GET         /login               controllers.LoginController.login
+POST        /authenticate        controllers.LoginController.authenticate
+GET         /authenticate        controllers.LoginController.login
+GET         /login               controllers.LoginController.logout
+
+
+
+
+# Map static resources from the /public folder to the /assets URL path
+GET         /assets/*file        controllers.Assets.versioned(path="/public", file: Asset)
+
+

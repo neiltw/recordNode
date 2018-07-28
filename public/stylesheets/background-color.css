@@ -1,0 +1,11 @@
+body {
+    background-color: #ffffff;
+}
+
+#modifyProductSuccess {
+    color: #4eb738;
+}
+
+#modifyProductError {
+    color: #b7231d;
+}

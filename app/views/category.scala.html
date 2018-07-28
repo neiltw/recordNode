@@ -1,0 +1,165 @@
+
+@(product : Form[Product] , listProduct: Seq[Product], oneProduct :Product, category: Seq[Category] )( implicit request: RequestHeader, messages: Messages, flash:Flash )
+
+@import helper._
+
+
+@main("Product  ") {
+
+    <head>
+        <meta name="viewport" content="width=device-width; initial-scale=1.0; maximum-scale=1.0; user-scalable=0;">
+
+        <script src="@routes.Assets.versioned("javascripts/liftProduct.js")"  type="text/javascript"></script>
+        <script src="@routes.Assets.versioned("javascripts/bootstrap/gijgo.min.js")"  type="text/javascript"></script>
+
+        <link  href="@routes.Assets.versioned("stylesheets/bootstrap/gijgo.min.css")" rel="stylesheet" type="text/css">
+
+    </head>
+
+
+    @nav()
+
+    <div class="container">
+
+        <div class="form-group col-md-3"><h3>項目功能</h3> </div>
+
+        <div class="form-row">
+            <div class="form-group col-md-3">
+
+            @form(CSRF(routes.CategoryController.createProduct() ) ){
+
+                <div class="form-group">
+                    <label for="productName">新增名稱</label>
+                    <input type="text" class="form-control" name="product_name" aria-describedby="emailHelp" placeholder="Product Name">
+                </div>
+                <div class="form-row">
+                    <div class="form-group col-sm-6">
+                        <button type="submit" class="btn btn-outline-primary">Add Product</button>
+                    </div>
+                    <div class="form-group col-sm-6">
+                        <div  id="modifyProductSuccess" >@flash.get("createSuccess")</div>
+                        <div id="modifyProductError" >@flash.get("createError")</div>
+                        @product.globalError.map{ error =>
+                            <span class="error_editor">
+                                @error.messages
+                            </span>
+                        }
+                    </div>
+                </div>
+
+            </div>
+
+            <div class="form-group col-md-2">
+                <div class="form-group">
+                    <label for="categorySelect">類別</label>
+                    <select class="form-control" name="category_id">
+                    @category.map{ data=>
+                        <option value=@data.category_id>@data.category_name</option>
+                    }
+                    </select>
+                </div>
+                }
+            </div>
+
+
+        </div>
+
+        <div class="form-row">
+
+            @*search bar*@
+            @if(oneProduct.id.toInt == -1){
+                <div class="form-group col-md-3">
+                        <!-- Search form -->
+                    <form action="/editCategory" method="post" >
+                        @CSRF.formField
+                        <div class="form-group">
+                            <label for="productName">修改名稱</label>
+                            <input type="text" class="form-control" name="product_name" aria-describedby="Search" placeholder="Search Product Name">
+                            <input type="hidden" class="form-control" name="category_id" value=0>
+                        </div>
+                        <div class="form-row">
+                            <div class="form-group col-sm-6">
+                                <button class="btn btn-outline-info" type="submit">Go!</button>
+                            </div>
+                            <div class="form-group col-sm-6">
+                                <div  id="modifyProductSuccess" >@flash.get("editSuccess")</div>
+                                <div id="modifyProductError" >@flash.get("editError")@flash.get("searchError")</div>
+                            </div>
+
+                        </div>
+
+                    </form>
+
+                </div>
+            }else{
+                <div class="form-group col-md-3">
+                    <form action="/editCategoryDone" method="post">
+                        @CSRF.formField
+                        <div class="form-group">
+
+                            <label for="productName">修改名稱</label>
+                            <input type="text" class="form-control" name="product_name" value="@oneProduct.product_name" aria-describedby="emailHelp" placeholder="Modify Name">
+                            <input type="hidden" class="form-control" name="id" value="@oneProduct.id" aria-describedby="emailHelp">
+                            <input type="hidden" class="form-control" name="category_id" value="@oneProduct.category_id">
+
+                        </div>
+
+                        <button type="submit" class="btn btn-outline-primary">Modify Product</button>
+                    </form>
+                </div>
+            }
+            @*select *@
+            <div class="form-group col-md-2">
+
+                <div class="form-group">
+                    <label for="exampleFormControlSelect1">Product</label>
+                    <select class="form-control" id="exampleFormControlSelect1">
+                    @listProduct.map{ data=>
+                        <option>@data.product_name</option>
+                    }
+                    </select>
+                </div>
+
+
+            </div>
+
+        </div>
+
+
+        <div class="form-row">
+            <div class="form-group col-md-4">
+                <form action="/delCategory" method="post">
+                    @CSRF.formField
+                    <div class="form-group">
+                        <label for="exampleFormControlSelect1">刪除項目</label>
+                        <select class="form-control" id="exampleFormControlSelect1" name="delProduct">
+                        @listProduct.map{ data=>
+                            <option  value="@data.id">@data.product_name</option>
+                        }
+                        </select>
+                    </div>
+                    <div class="form-row">
+                        <div class="form-group col-sm-6">
+                            <button type="submit" class="btn btn-outline-danger">Delete</button>
+                        </div>
+                        <div class="form-group col-sm-6">
+                            <div id="delProductDone" >@flash.get("delError")@flash.get("delSuccess")</div>
+                        </div>
+
+                    </div>
+
+                </form>
+
+            </div>
+
+        </div>
+
+
+
+    </div>
+
+
+
+
+}
+
